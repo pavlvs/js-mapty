@@ -1,0 +1,48 @@
+.primary-nav {
+    padding-top: 10px;
+    @mixin atMedium {
+        padding-top: 0;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        list-style: none;
+        padding-right: 7px;
+
+        @mixin atMedium {
+            padding-right: 20px;
+        }
+    }
+
+    li:last-child {
+        padding-right: 0;
+        @mixin atMedium {
+            padding-right: 20px;
+        }
+    }
+
+    a {
+        background-color: rgba(47, 85, 114, 0.5);
+        color: white;
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 300;
+        padding: 5px 8px;
+        text-decoration: none;
+
+        @mixin atMedium {
+            background-color: transparent;
+            font-size: 1rem;
+            padding: 12px 0;
+
+            &.is-current-link {
+                color: goldenrod;
+            }
+        }
+    }
+}
