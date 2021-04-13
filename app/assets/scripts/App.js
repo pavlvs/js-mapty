@@ -5,7 +5,6 @@ if (module.hot) {
     module.hot.accept()
 }
 
-
 // WORKOUT ARCHITECTURE
 class Workout {
     date = new Date()
@@ -52,7 +51,6 @@ class Cycling extends Workout {
     }
 }
 // APPLICATION ARCHITECTURE
-
 const form = document.querySelector('.form')
 const containerWorkouts = document.querySelector('.workouts')
 const inputType = document.querySelector('.form__input--type')
@@ -67,7 +65,12 @@ class App {
     #workouts = []
 
     constructor() {
+        // Set user's position
         this._getPosition()
+
+        // Get data from local localStorage
+        this._getLocalStorage()
+        // Attach event handlers
         form.addEventListener('submit', this._newWorkout.bind(this))
         inputType.addEventListener('change', this._toggleElevationFields)
         containerWorkouts.addEventListener('click', this._moveToPopup.bind(this))
@@ -86,7 +89,6 @@ class App {
 
     _loadMap(position) {
         const { latitude, longitude } = position.coords
-        console.log(`https://www.google.com/maps/@${latitude},${longitude}`)
 
         const coords = [latitude, longitude]
 
@@ -99,6 +101,10 @@ class App {
 
         // Handling clicks on map
         this.#map.on('click', this._showForm.bind(this))
+
+        this.#workouts.forEach(workout => {
+            this._renderWorkoutMarker(workout)
+        })
     }
 
     _showForm(mapE) {
@@ -164,7 +170,6 @@ class App {
 
         // Add new object to workout array
         this.#workouts.push(workout)
-        console.log(workout)
 
         // Render workout on map as marker
         this._renderWorkoutMarker(workout)
@@ -176,6 +181,9 @@ class App {
 
         // Clear input fields
         this._hideForm()
+
+        // Set local storage to all workouts
+        this._setLocalStorage()
 
     }
 
@@ -260,6 +268,27 @@ class App {
                 duration: 1
             }
         })
+    }
+
+    _setLocalStorage() {
+        localStorage.setItem('workouts', JSON.stringify(this.#workouts))
+    }
+
+    _getLocalStorage() {
+        const data = JSON.parse(localStorage.getItem('workouts'))
+
+        if (!data) return
+
+        this.#workouts = data
+
+        this.#workouts.forEach(workout => {
+            this._renderWorkout(workout)
+        })
+    }
+
+    reset() {
+        localStorage.removeItem('workouts')
+        location.reload()
     }
 }
 
