@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const HtmlWebpack = require('html-webpack-plugin')
 const fse = require('fs-extra')
+const classProperties = require('@babel/plugin-proposal-class-properties')
 
 const postCSSPlugins = [
     require('postcss-import'),
@@ -60,7 +61,12 @@ let config = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-react', '@babel/preset-env'],
+                        presets: ['@babel/preset-react', '@babel/preset-env',
+                            {
+                                plugins: [
+                                    '@babel/plugin-proposal-class-properties'
+                                ]
+                            }],
                     },
                 },
             },
